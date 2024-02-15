@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const logSchema = new Schema({
   dt: {
-    type: String,
+    type: Date,
     required: true,
   },
   message: {
@@ -16,6 +16,6 @@ const logSchema = new Schema({
   },
 });
 
-const userOne = model("userOne", logSchema);
+const Logs = model("userOne", logSchema);
 
-module.exports = userOne;
+module.exports = Logs;

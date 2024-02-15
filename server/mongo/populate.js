@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const userOne = require("./schemas");
+const Logs = require("./schemas");
 const { connectDB, disconnectDB } = require("./connection");
 const fs = require("fs");
 
@@ -27,5 +27,24 @@ rl.on("line", (line) => {
 
 // Cuando se termina de leer el archivo
 rl.on("close", () => {
-  console.log("Contenido del archivo JSONL:", jsonArray);
+  connectDB();
+  const data = jsonArray.map((object) => ({
+    dt: object.dt,
+    message: object.message,
+    host: object.syslog.host,
+  }));
+
+  Logs.insertMany(data)
+    .then((result) => {
+      console.log("Datos insertados exitosamente en la colección 'Logs'");
+      console.log(result); // Resultado de la operación de inserción
+      console.log("Contenido del archivo JSONL:", data); // Impresión después de la inserción exitosa
+    })
+    .catch((error) => {
+      console.error("Error al insertar los datos:", error);
+    })
+    .finally(() => {
+      // Desconectar la base de datos después de la operación
+      disconnectDB();
+    });
 });
