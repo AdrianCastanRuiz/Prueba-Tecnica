@@ -29,4 +29,7 @@ button {
 }
 ul {
   margin: 2%;
+  background-color: white;
+  padding: 2%;
+  padding-left: 4%;
 }
