@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: aliceblue;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 2%;
+}
+
+nav {
+  width: 70%;
+}
+
+.input {
+  width: 80%;
+  max-height: 135%;
+}
+button {
+  width: 13%;
+  max-height: 137%;
+  margin-left: 1%;
+}
+ul {
+  margin: 2%;
+}

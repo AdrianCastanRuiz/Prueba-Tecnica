@@ -1,1 +1,0 @@
-# Prueba-t-cnica
