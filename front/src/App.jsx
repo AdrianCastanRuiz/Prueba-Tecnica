@@ -16,13 +16,27 @@ import { getFilteredData } from "./Appi";
 function App() {
   const [logs, setLogs] = useState([]);
   const [searchString, setSearchString] = useState("");
+  const [noResults, setNoresults] = useState(false);
   const [error, setError] = useState(false);
 
   const handleClick = async () => {
-    const data = await getFilteredData(searchString);
-    setLogs(data);
-    console.log(logs);
-    setSearchString("");
+    try {
+      setError(false);
+      setNoresults(false);
+      const data = await getFilteredData(searchString);
+      if (data.length > 0) {
+        setLogs(data);
+      } else {
+        setNoresults(true);
+        setLogs([]);
+      }
+
+      console.log(logs);
+      setSearchString("");
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
   };
 
   useEffect(() => {
@@ -40,23 +54,12 @@ function App() {
     fecthData();
   }, []);
 
-  console.log(logs);
-
   return (
-    <div
-      style={{
-        width: "100vw",
-        display: "flex",
-        justifyContent: "ceneter",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
+    <div className={styles.container}>
       <nav className={styles.navbar}>
         <Input
           value={searchString}
           onChange={(e) => setSearchString(e.target.value)}
-          placeholder=""
           size="lg"
         />
         <button onClick={handleClick}>Search</button>
@@ -72,6 +75,16 @@ function App() {
             </Tr>
           </Thead>
           <Tbody>
+            {error && (
+              <Tr>
+                <Td>Something went wrong.</Td>
+              </Tr>
+            )}
+            {noResults && (
+              <Tr>
+                <Td>No results found.</Td>
+              </Tr>
+            )}
             {logs.length > 0 &&
               logs.map((log) => {
                 return (
