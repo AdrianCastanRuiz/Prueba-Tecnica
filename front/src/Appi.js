@@ -6,3 +6,20 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const getFilteredData = async (searchString) => {
+  try {
+    const response = await axios.get("http://localhost:3001/filter/", {
+      params: {
+        search: searchString,
+      },
+    });
+
+    console.log(response.data);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los datos filtrados:", error);
+    throw error;
+  }
+};

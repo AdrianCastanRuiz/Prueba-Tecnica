@@ -1,26 +1,36 @@
-const { Schema, model } = require("mongoose");
-const mongoose = require("mongoose");
 const Logs = require("../server/mongo/schemas");
 
-const get = async (req, res) => {
+const getData = async (req, res) => {
   try {
     const data = await Logs.find();
+
     res.status(200).json(data);
+  } catch (error) {
+    // Manejar errores
+    res.status(500).json(error);
+  }
+};
+const getDataFiltered = async (req, res) => {
+  try {
+    const searchString = req.query.search;
+
+    console.log(searchString);
+
+    if (searchString) {
+      const data = await Logs.find({
+        message: { $regex: searchString, $options: "i" },
+      });
+
+      res.status(200).json(data);
+    } else {
+      res.status(204).json({ message: "No documents found" });
+    }
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-const getAllUserOnes = async (req, res) => {
-  try {
-    const AllData = await Logs.find();
-    res.status(200).json(AllData);
-  } catch (e) {
-    res.status(500).json(e);
-  }
-};
-
-const post = async (req, res) => {
+const postData = async (req, res) => {
   try {
     const body = req.body;
     const newUserOne = new Logs(body);
@@ -31,7 +41,7 @@ const post = async (req, res) => {
 };
 
 module.exports = {
-  getAllUserOnes,
-  get,
-  post,
+  getData,
+  postData,
+  getDataFiltered,
 };
