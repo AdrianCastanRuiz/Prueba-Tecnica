@@ -24,10 +24,9 @@ rl.on("line", (line) => {
     console.error("Error al analizar la línea como JSON:", error);
   }
 });
-
+connectDB();
 // Cuando se termina de leer el archivo
 rl.on("close", () => {
-  connectDB();
   const data = jsonArray.map((object) => ({
     dt: object.dt,
     message: object.message,

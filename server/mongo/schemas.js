@@ -16,6 +16,6 @@ const logSchema = new Schema({
   },
 });
 
-const Logs = model("userOne", logSchema);
+const Logs = model("userOne", logSchema, "userOne");
 
 module.exports = Logs;
