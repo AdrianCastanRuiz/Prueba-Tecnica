@@ -1,23 +1,52 @@
 import { useState, useEffect } from "react";
 import styles from "./App.module.css";
+import { api } from "./Appi";
 
 function App() {
-  const [data, setData] = useState([2, 2, 2, 2, 2, 2]);
+  const [logs, setLogs] = useState("");
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fecthData = async () => {
+      try {
+        const res = api.get("/");
+        setLogs(res.data);
+        if (error) setError(false);
+      } catch (error) {
+        console.log(error);
+        setError(true);
+      }
+    };
+    fecthData();
+  }, []);
 
   return (
     <>
-      <div className={styles.container}>
-        <nav>
-          <input className={styles.input} type="text" />
-          <button>Search</button>
-          <ul>
-            {data.length > 0 &&
-              data.map((element) => {
-                return <li>{element}</li>;
-              })}
-          </ul>
-        </nav>
-      </div>
+      <nav>
+        <input className={styles.searchInput} type="text" />
+        <button>Search</button>
+      </nav>
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Host</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          {logs &&
+            logs.map((log) => {
+              return (
+                <tr>
+                  <td>{log.time}</td>
+                  <td>{log.host}</td>
+                  <td>{log.message}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
     </>
   );
 }
